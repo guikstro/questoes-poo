@@ -1,0 +1,71 @@
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+public class AdivinheONumero implements ActionListener {
+    private JFrame frame;
+    private JButton[] botoes;
+    private int numeroEscolhido;
+    private int tentativas;
+
+    public AdivinheONumero() {
+        // Cria a janela principal
+        frame = new JFrame("Adivinhe o número");
+        frame.setSize(300, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Cria um painel para os botões
+        JPanel painelBotoes = new JPanel(new GridLayout(5, 4));
+
+        // Cria os botões
+        botoes = new JButton[20];
+        for (int i = 0; i < botoes.length; i++) {
+            botoes[i] = new JButton("" + (i + 1));
+            botoes[i].addActionListener(this);
+            painelBotoes.add(botoes[i]);
+        }
+
+        // Adiciona o painel de botões à janela
+        frame.add(painelBotoes);
+
+        // Escolhe um número aleatório entre 1 e 20
+        Random gerador = new Random();
+        numeroEscolhido = gerador.nextInt(20) + 1;
+        tentativas = 0;
+
+        // Exibe a janela
+        frame.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        tentativas++;
+
+        // Verifica qual botão foi clicado
+        for (int i = 0; i < botoes.length; i++) {
+            if (e.getSource() == botoes[i]) {
+                // Imprime o número escolhido pelo usuário e pelo programa
+                System.out.println("Você escolheu o número " + (i+1));
+                System.out.println("O número escolhido pelo programa foi " + numeroEscolhido);
+
+                // Verifica se o usuário acertou o número
+                if ((i+1) == numeroEscolhido) {
+                    JOptionPane.showMessageDialog(frame, "Parabéns, você acertou o número em " + tentativas + " tentativas!");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Ops, você errou! Tente novamente.");
+                }
+                return;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new AdivinheONumero();
+    }
+}
